@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Complete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .message {
+            text-align: center;
+            margin-top: 50px;
+            color: #ff0000; /* YouTube red color */
+        }
+    </style>
+</head>
+<body>
+    {% if audio_only %}
+        <h1 class="message">Audio Downloaded Successfully!</h1>
+    {% else %}
+        <h1 class="message">Video Downloaded Successfully!</h1>
+    {% endif %}
+</body>
+</html>

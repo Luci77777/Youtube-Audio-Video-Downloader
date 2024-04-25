@@ -1,0 +1,39 @@
+<!-- download.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download File</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h2>Download File</h2>
+    <form id="download-form" action="{% url 'download' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" id="download-button">Download</button>
+    </form>
+    <script>
+        $(document).ready(function() {
+            $('#download-form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        // Trigger download when successful response is received
+                        var blob = new Blob([data], { type: 'application/octet-stream' });
+                        var url = window.URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'downloaded_file.txt';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
