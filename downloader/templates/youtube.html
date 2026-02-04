@@ -2,84 +2,185 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 50px;
-            color: #ff0000; /* YouTube red color */
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .checkbox-label input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            color: #333; /* Dark gray color */
-            margin-bottom: 10px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        * {
             box-sizing: border-box;
         }
-        button[type="submit"] {
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff0000, #ff6a6a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #ffffff;
             width: 100%;
-            padding: 10px;
-            background-color: #ff0000; /* YouTube red color */
+            max-width: 420px;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 18px;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff0000;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .checkbox input {
+            accent-color: #ff0000;
+            transform: scale(1.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
             border: none;
+            background: linear-gradient(135deg, #ff0000, #ff4d4d);
             color: #fff;
-            font-weight: bold;
-            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
-        button[type="submit"]:hover {
-            background-color: #cc0000; /* Darker shade of YouTube red */
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
         }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .info {
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+            margin-top: 14px;
+        }
+
         .error {
-            color: #ff0000; /* Error message color */
-            font-weight: bold;
+            margin-top: 16px;
+            text-align: center;
+            color: #ff0000;
+            font-weight: 600;
+            font-size: 14px;
         }
     </style>
+
+    <script>
+        function startDownload() {
+            const btn = document.getElementById("downloadBtn");
+            btn.disabled = true;
+            btn.innerText = "Downloading…";
+        }
+    </script>
 </head>
+
 <body>
-    <h1>YouTube Downloader</h1>
-    <form action="{% url 'youtube' %}" method="post">
+
+<div class="card">
+    <div class="logo">▶ YouTube Downloader</div>
+    <div class="subtitle">
+        Paste a YouTube link and download instantly
+    </div>
+
+    <form action="{% url 'youtube' %}" method="post" onsubmit="startDownload()">
         {% csrf_token %}
-        <label for="link">Enter YouTube Video URL:</label><br>
-        <input type="text" id="link" name="link" required><br>
-        <div class="checkbox-label">
+
+        <label for="link">YouTube Video URL</label>
+        <input
+            type="text"
+            id="link"
+            name="link"
+            placeholder="https://www.youtube.com/watch?v=..."
+            required
+        >
+
+        <div class="checkbox">
             <input type="checkbox" id="audio_only" name="audio_only">
-            <label for="audio_only">Download audio only</label><br>
+            <label for="audio_only">Download audio only (MP3)</label>
         </div>
-        <button type="submit">Download</button>
+
+        <button type="submit" id="downloadBtn">
+            Download Now
+        </button>
+
+        <div class="info">
+            Your browser will ask where to save the file
+        </div>
     </form>
+
     {% if error_message %}
-        <p class="error">{{ error_message }}</p>
+        <div class="error">{{ error_message }}</div>
     {% endif %}
+</div>
+
 </body>
 </html>
