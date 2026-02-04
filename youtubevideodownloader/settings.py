@@ -25,7 +25,13 @@ SECRET_KEY = 'django-insecure-j$$gj^+z=pjjl1=apk+h(8icqib6d0d)xv=_c1pq9ee8fs-s(i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+#ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = [
+    "aligncarephysiotherapy.in",
+    "www.aligncarephysiotherapy.in",
+    "youtube-audio-video-downloader-r4g3.onrender.com",
+]
 
 
 # Application definition
@@ -122,3 +128,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
